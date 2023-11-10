@@ -8,7 +8,7 @@ interface CityProps {
   };
 }
 
-const City: React.FC<CityProps> = ({ city }) => {
+export const City: React.FC<CityProps> = ({ city }) => {
     return (
         <div className="city-card">
             <h2>{city.name}</h2>
@@ -17,5 +17,3 @@ const City: React.FC<CityProps> = ({ city }) => {
         </div>
     );
 }
-
-export default City;

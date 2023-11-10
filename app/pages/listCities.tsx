@@ -1,31 +1,18 @@
-"use client";
-import React, { useState, useEffect } from 'react';
-import City from '../components/city';
-import api from '../services/temperatureApi';
+import { City } from '../components/city';
 
-function ListCities() {
-    const [cities, setCities] = useState([]);
-    useEffect(() => {
-        async function fetchCities() {
-            try {
-            const response = await api.get('/');
-            setCities(response.data);
-            console.log(cities)
-            } catch(err) {
-                console.log("Ocorreu um erro ao fazer a requizição à api " + err);
-            }
-        }
-        fetchCities();
-    }, []);
+export async function ListCities() {
+    const api = process.env.API_URL;
+    if (!api) 
+        throw new Error('Erro ao encontrar a api');
+    const res = await fetch( api, {next: {revalidate: 20}})
+    const cities = await res.json()
 
     return (
         <div className="city-list">
-            <h1>Cidade</h1>
-            {cities.map((city: any) => (
-                <City key={city.id} city={city} />
+            <h1>Cidades:</h1>
+            {cities.map((city, index) => (
+                <City key={index} city={city} />
             ))}
         </div>
     );
 }
-
-export default ListCities;
